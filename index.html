@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<!--
+  ════════════════════════════════════════════════
+  WHAT IS DOCTYPE?
+  Tells the browser: "This is a modern HTML5 page."
+  Always put on line 1. Without it, browsers go into
+  "quirks mode" and things look broken.
+  ════════════════════════════════════════════════
+-->
+<html lang="en">
+<!--
+  <html> is the ROOT element — everything lives inside it.
+  lang="en" tells search engines and screen readers
+  the page is written in English.
+-->
+
+<head>
+<!--
+  ════════════════════════════════════════════════
+  THE <head> SECTION — nothing here is VISIBLE.
+  It contains instructions FOR the browser:
+  - Character set to use
+  - Page title (shown in browser tab)
+  - Links to fonts and styles
+  - SEO (Search Engine Optimisation) info
+  ════════════════════════════════════════════════
+-->
+
+  <meta charset="UTF-8">
+  <!-- Supports all characters including £ sign and accents -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Makes the page look correct on mobile phones -->
+
+  <title>NexGen Drafts UK – Affordable CAD & CAM Services</title>
+  <!-- Shown in the browser tab and Google search results -->
+
+  <meta name="description" content="Affordable 2D/3D CAD modelling, technical drawings and CNC milling & turning code by a UK freelance engineer. Up to 50% below market rates. Email for a free quote.">
+  <!-- Google shows this under your title in search results. Keep under 160 characters. -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <!-- Opens a fast connection to Google Fonts before loading (speeds up the page) -->
+
+ <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    Loads two fonts:
+    - Syne: headings (bold, engineering feel)
+    - DM Sans: body text (clean, readable)
+    display=swap shows a fallback font while loading
+    so the page doesn't look blank.
+  -->
+
+<style>
+/*
+  ════════════════════════════════════════════════
+  CSS = Cascading Style Sheets
+  Controls HOW things LOOK.
+  HTML = the content   CSS = the design
+
+  Syntax: selector { property: value; }
+  Example: h1 { color: red; font-size: 40px; }
+  ════════════════════════════════════════════════
+*/
+
+/* ── RESET ──────────────────────────────────────
+   Browsers add default margin/padding. This removes
+   all of that so YOU are in full control.
+   box-sizing: border-box = padding is included
+   INSIDE the width, not added on top.
+*/
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── CSS VARIABLES ───────────────────────────────
+   Define a colour ONCE, reuse it everywhere.
+   To change brand colour: edit --accent here only.
+   Syntax:  --name: value;
+   To use:  color: var(--name);
+*/
+:root {
+  --ink: #0d0d0d;
+  --ink-soft: #444;
+  --ink-muted: #888;
+  --paper: #f5f2ed;
+  --accent: #c8401f;
+  --accent-dark: #9c2f14;
+  --accent-light: #f0d5ce;
+  --steel: #1a2535;
+  --border: rgba(0,0,0,0.1);
+  --radius: 6px;
+  --radius-lg: 14px;
+}
+
+/* smooth scroll = nav links glide instead of jump */
+html { scroll-behavior: smooth; }
+
+/* body = the main page container */
+body {
+  font-family: "Lora", serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.6;       /* 1.6 = comfortable reading spacing */
+  overflow-x: hidden;     /* Prevents horizontal scrollbar */
+}
+
+h1, h2, h3, h4 {
+  font-family: "Lora", serif;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* ══ NAVIGATION ════════════════════════════════
+   position: fixed = sticks to top when scrolling
+   z-index: 100 = sits above all other content
+   backdrop-filter: blur = frosted glass effect
+*/
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2.5rem;
+  background: rgba(245,242,237,0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.15rem;
+  color: var(--ink); text-decoration: none;
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo .dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;     /* Makes a square into a circle */
+  background: var(--accent); display: inline-block;
+}
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  text-decoration: none; font-size: 0.9rem; font-weight: 500;
+  color: var(--ink-soft); transition: color .2s;
+}
+.nav-links a:hover { color: var(--accent); } /* :hover = when mouse is over */
+.nav-cta {
+  background: var(--accent); color: #fff;
+  padding: 0.55rem 1.4rem; border-radius: var(--radius);
+  font-size: 0.88rem; font-weight: 500; text-decoration: none; transition: background .2s;
+}
+.nav-cta:hover { background: var(--accent-dark); }
+
+/* ══ HERO ══════════════════════════════════════
+   min-height: 100vh = at least as tall as the screen
+   display: grid + grid-template-columns: 1fr 1fr = two equal columns
+*/
+.hero {
+  min-height: 100vh; background: var(--steel); color: #fff;
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center; padding: 7rem 2.5rem 5rem;
+  position: relative; overflow: hidden;
+}
+/* ::before creates a decorative element BEFORE the content (the grid lines) */
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,0.025) 39px,rgba(255,255,255,0.025) 40px),
+              repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,0.025) 39px,rgba(255,255,255,0.025) 40px);
+  pointer-events: none;
+}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(200,64,31,0.2); border: 1px solid rgba(200,64,31,0.5);
+  padding: 0.35rem 0.9rem; border-radius: 999px; /* Very high = pill shape */
+  font-size: 0.78rem; font-weight: 500; color: #f4a590;
+  margin-bottom: 1.8rem; letter-spacing: 0.05em; text-transform: uppercase;
+}
+/* clamp(min, preferred, max) = responsive font size */
+.hero h1 { font-size: clamp(2.4rem,4.5vw,4rem); font-weight: 800; color: #fff; margin-bottom: 1.5rem; }
+.hero h1 span { color: var(--accent); }
+.hero p { font-size: 1.1rem; color: rgba(255,255,255,0.65); max-width: 480px; margin-bottom: 2.5rem; font-weight: 300; }
+.hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--accent); color: #fff; padding: 0.85rem 2rem; border-radius: var(--radius);
+  font-weight: 600; text-decoration: none; font-size: 0.95rem; transition: background .2s, transform .15s;
+}
+.btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); }
+.btn-outline {
+  border: 1.5px solid rgba(255,255,255,0.3); color: #fff; padding: 0.85rem 2rem; border-radius: var(--radius);
+  font-weight: 500; text-decoration: none; font-size: 0.95rem; transition: border-color .2s, background .2s;
+}
+.btn-outline:hover { border-color: #fff; background: rgba(255,255,255,0.06); }
+.hero-visual { display: flex; justify-content: center; align-items: center; position: relative; z-index: 1; }
+.cad-diagram {
+  width: 380px; height: 340px; border: 1.5px solid rgba(200,64,31,0.4);
+  border-radius: var(--radius-lg); background: rgba(255,255,255,0.03);
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ══ STATS STRIP ═══════════════════════════════ */
+.stats-strip { background: var(--accent); display: flex; align-items: stretch; }
+.stat-item { flex: 1; padding: 1.6rem 2rem; border-right: 1px solid rgba(255,255,255,0.2); text-align: center; }
+.stat-item:last-child { border-right: none; }
+.stat-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: #fff; }
+.stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.8); margin-top: 2px; }
+
+/* ══ GENERAL SECTION STYLES ════════════════════ */
+section { padding: 6rem 2.5rem; }
+.section-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.8rem; }
+.section-title { font-size: clamp(1.8rem,3vw,2.6rem); font-weight: 700; color: var(--ink); margin-bottom: 1rem; }
+.section-sub { font-size: 1.05rem; color: var(--ink-soft); max-width: 580px; font-weight: 300; }
+.container { max-width: 1100px; margin: 0 auto; } /* Centres content and limits max width */
+
+/* ══ SERVICES ══════════════════════════════════ */
+#services { background: #fff; }
+.services-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); /* 3 equal columns */
+  gap: 1.5px; margin-top: 3.5rem;
+  background: var(--border); /* This IS the thin dividing line colour */
+  border: 1.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden;
+}
+.service-card { background: #fff; padding: 2.5rem 2rem; transition: background .2s; }
+.service-card:hover { background: #fafafa; }
+.service-icon {
+  width: 52px; height: 52px; border-radius: var(--radius);
+  background: var(--accent-light); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;
+}
+.service-icon svg { width: 26px; height: 26px; stroke: var(--accent); fill: none; stroke-width: 1.8; }
+.service-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.7rem; }
+.service-card p { font-size: 0.92rem; color: var(--ink-soft); line-height: 1.7; font-weight: 300; }
+.service-tags { margin-top: 1.2rem; display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: 0.75rem; font-weight: 500; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--border); color: var(--ink-soft); background: var(--paper); }
+
+/* ══ PRICING ════════════════════════════════════ */
+#pricing { background: var(--paper); }
+.pricing-intro {
+  background: #fff3cd; border-left: 4px solid #e6a817;
+  padding: 1rem 1.4rem; border-radius: 0 var(--radius) var(--radius) 0;
+  margin-top: 2rem; margin-bottom: 3rem; font-size: 0.95rem; color: #6b4a00;
+}
+.pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+.price-card {
+  background: #fff; border-radius: var(--radius-lg);
+  border: 1.5px solid var(--border); padding: 2rem;
+  position: relative; transition: transform .2s;
+}
+.price-card:hover { transform: translateY(-4px); } /* Lifts on hover */
+.price-card.featured { border-color: var(--accent); }
+.featured-badge {
+  position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+  background: var(--accent); color: #fff; font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 14px; border-radius: 999px;
+}
+.price-type { font-size: 0.78rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.6rem; }
+.price-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 1.2rem; }
+.price-amount { margin-bottom: 1.5rem; }
+.price-amount .from { font-size: 0.8rem; color: var(--ink-muted); display: block; }
+.price-amount .amount { font-family: 'Syne', sans-serif; font-size: 2.4rem; font-weight: 800; color: var(--ink); }
+.price-amount .unit { font-size: 0.85rem; color: var(--ink-muted); }
+.price-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.8rem; }
+.price-list li { font-size: 0.88rem; color: var(--ink-soft); display: flex; align-items: flex-start; gap: 8px; }
+.price-list li::before { content: '✓'; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.price-cta {
+  display: block; text-align: center; background: var(--accent); color: #fff;
+  padding: 0.7rem; border-radius: var(--radius); font-weight: 600;
+  text-decoration: none; font-size: 0.9rem; transition: background .2s;
+}
+.price-cta:hover { background: var(--accent-dark); }
+.price-note { font-size: 0.8rem; color: var(--ink-muted); margin-top: 1.5rem; text-align: center; font-style: italic; }
+
+/* ══ ABOUT ══════════════════════════════════════ */
+#about { background: #fff; }
+.about-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem; align-items: center; margin-top: 3rem; }
+.about-img-box {
+  background: var(--steel); border-radius: var(--radius-lg);
+  aspect-ratio: 4/5; /* Keeps a fixed portrait ratio */
+  display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
+}
+.about-img-box::after {
+  content: 'ADD YOUR PHOTO HERE'; font-family: 'Syne', sans-serif; font-size: 0.7rem;
+  letter-spacing: 0.15em; color: rgba(255,255,255,0.3);
+  border: 1px dashed rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 4px;
+}
+.about-content h2 { font-size: 2rem; margin-bottom: 1rem; }
+.about-content p { color: var(--ink-soft); margin-bottom: 1rem; font-weight: 300; }
+.skills-list { margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.skill-pill {
+  display: flex; align-items: center; gap: 8px; font-size: 0.88rem; font-weight: 500;
+  padding: 0.5rem 0.8rem; border-radius: var(--radius); border: 1px solid var(--border); background: var(--paper);
+}
+.skill-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+/* ══ PROCESS ════════════════════════════════════ */
+#process { background: var(--steel); color: #fff; }
+#process .section-title { color: #fff; }
+#process .section-sub { color: rgba(255,255,255,0.6); }
+.steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; margin-top: 4rem; position: relative; }
+.steps::before { /* Horizontal connector line */
+  content: ''; position: absolute; top: 2rem; left: 12%; right: 12%;
+  height: 1px; background: rgba(255,255,255,0.15); z-index: 0;
+}
+.step { position: relative; z-index: 1; text-align: center; }
+.step-num {
+  width: 52px; height: 52px; border-radius: 50%;
+  border: 1.5px solid rgba(200,64,31,0.6); background: rgba(200,64,31,0.12);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1.5rem; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--accent);
+}
+.step h3 { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.6rem; }
+.step p { font-size: 0.88rem; color: rgba(255,255,255,0.55); font-weight: 300; }
+
+/* ══ CONTACT ════════════════════════════════════ */
+#contact { background: var(--paper); }
+.contact-wrapper { max-width: 700px; margin: 3.5rem auto 0; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.contact-card {
+  background: #fff; border-radius: var(--radius-lg);
+  padding: 2rem; border: 1.5px solid var(--border);
+  display: flex; flex-direction: column; gap: 0.8rem;
+}
+.contact-icon {
+  width: 44px; height: 44px; border-radius: var(--radius);
+  background: var(--accent-light); display: flex; align-items: center; justify-content: center;
+}
+.contact-icon svg { width: 22px; height: 22px; stroke: var(--accent); fill: none; stroke-width: 1.8; }
+.contact-card h3 { font-size: 1rem; font-weight: 700; }
+.contact-card p { font-size: 0.88rem; color: var(--ink-soft); font-weight: 300; line-height: 1.6; }
+.contact-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--accent); color: #fff; padding: 0.6rem 1.2rem; border-radius: var(--radius);
+  font-weight: 600; text-decoration: none; font-size: 0.88rem; margin-top: auto; transition: background .2s; width: fit-content;
+}
+.contact-link:hover { background: var(--accent-dark); }
+.contact-message {
+  max-width: 700px; margin: 1.5rem auto 0;
+  background: #fff; border-radius: var(--radius-lg); padding: 2rem; border: 1.5px solid var(--border);
+}
+.contact-message h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 1rem; }
+.email-template {
+  background: var(--paper); border-radius: var(--radius); padding: 1.2rem 1.4rem;
+  font-size: 0.88rem; color: var(--ink-soft); line-height: 1.8; border-left: 3px solid var(--accent);
+}
+.email-template strong { color: var(--ink); font-weight: 600; }
+
+/* ══ FOOTER ═════════════════════════════════════ */
+footer {
+  background: var(--steel); color: rgba(255,255,255,0.6);
+  padding: 3rem 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+}
+.footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; color: #fff; font-size: 1rem; }
+footer p { font-size: 0.85rem; }
+footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
+footer a:hover { color: #fff; }
+
+/* ══ RESPONSIVE (@media queries) ════════════════
+   Apply these styles ONLY on screens smaller than 900px.
+   This makes the layout work on phones/tablets.
+*/
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; padding-top: 8rem; } /* 1 column on mobile */
+  .hero-visual { display: none; }
+  .services-grid { grid-template-columns: 1fr; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .about-grid { grid-template-columns: 1fr; }
+  .about-img-box { display: none; }
+  .contact-wrapper { grid-template-columns: 1fr; }
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .stats-strip { flex-wrap: wrap; }
+  .stat-item { min-width: 50%; }
+}
+</style>
+</head>
+
+
+<body>
+<!-- Everything VISIBLE goes inside <body> -->
+
+
+<!-- ══ NAVIGATION ══════════════════════════════
+     <nav> = semantic tag for navigation.
+     Semantic = tag name DESCRIBES its purpose.
+     Helps search engines understand page structure.
+-->
+<nav>
+<a class="nav-logo" href="#">
+  <img src="newgen-drafts-logo.svg" alt="NewGen Drafts"
+       style="height:40px; width:auto;">
+</a>
+
+  <!-- <ul> = unordered list | <li> = list item | <a> = anchor/link -->
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <!-- href="#contact" scrolls to the element with id="contact" -->
+  <a class="nav-cta" href="#contact">Get a Quote</a>
+</nav>
+
+
+<!-- ══ HERO SECTION ═════════════════════════════ -->
+<section class="hero">
+
+  <div style="position:relative;z-index:1;">
+    <!-- style="" = inline CSS. Only use for one-off overrides. -->
+
+    <div class="hero-tag">
+      <span style="width:6px;height:6px;border-radius:50%;background:#f4a590;display:inline-block;"></span>
+      Serving clients across the UK
+    </div>
+
+    <!-- &amp; = HTML entity for & | <br> = line break -->
+    <h1>CAD &amp; CAM<br>Engineering<br><span>At Half the Price</span></h1>
+
+    <p>Professional 2D &amp; 3D modelling, drawings, and CNC milling &amp; turning code — using SolidWorks, Fusion 360, and Creo. Up to 50% below standard UK market rates.</p>
+
+    <div class="hero-btns">
+      <a class="btn-primary" href="#contact">Email Me for a Quote</a>
+      <a class="btn-outline" href="#pricing">See Pricing</a>
+    </div>
+  </div>
+
+  <!-- Right column: SVG engineering illustration
+       SVG = Scalable Vector Graphics — drawn by the browser
+       using maths, always crisp at any screen size.
+       viewBox="0 0 310 280" = coordinate space (x, y, width, height)
+  -->
+  <div class="hero-visual">
+    <!--
+      VIDEO: Drum assembly working — loops silently in the hero.
+      mix-blend-mode: lighten makes the dark background of the video
+      blend into the hero's dark steel (#1a2535) background seamlessly,
+      so there is no hard box edge visible.
+      border-radius clips the corners to match the frame style.
+    -->
+    <div style="
+      position: relative;
+      width: 420px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1.5px solid rgba(200,64,31,0.35);
+      box-shadow: 0 0 60px rgba(200,64,31,0.12), 0 0 0 1px rgba(255,255,255,0.04);
+    ">
+      <video
+        src="drum_working.mp4"
+        autoplay
+        loop
+        muted
+        playsinline
+        style="
+          display: block;
+          width: 100%;
+          height: auto;
+          mix-blend-mode: lighten;
+          border-radius: 13px;
+        "
+      ></video>
+      <!-- Subtle label at the bottom -->
+      <div style="
+        position: absolute; bottom: 0; left: 0; right: 0;
+        background: linear-gradient(transparent, rgba(26,37,53,0.85));
+        padding: 1rem 1.2rem 0.8rem;
+        font-size: 0.75rem;
+        color: rgba(255,255,255,0.6);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        font-family: 'DM Sans', sans-serif;
+      ">NewGen Drafts — Drum Assembly · Live CNC Project</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ STATS STRIP ══════════════════════════════ -->
+<div class="stats-strip">
+  <div class="stat-item"><div class="stat-num">~50%</div><div class="stat-label">Below market rates</div></div>
+  <div class="stat-item"><div class="stat-num">2D+3D</div><div class="stat-label">CAD modelling</div></div>
+  <div class="stat-item"><div class="stat-num">CAM</div><div class="stat-label">Milling &amp; turning code</div></div>
+  <div class="stat-item"><div class="stat-num">FEA</div><div class="stat-label">Stress analysis</div></div>
+</div>
+
+
+<!-- ══ SERVICES SECTION ═════════════════════════
+     id="services" = lets href="#services" scroll here
+-->
+<section id="services">
+  <div class="container">
+    <div class="section-label">What I offer</div>
+    <h2 class="section-title">Engineering Design &amp; CAM Services</h2>
+    <p class="section-sub">From concept drawings to production-ready CNC code using SolidWorks, Fusion 360 and Creo.</p>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+        </div>
+        <h3>2D CAD Drawing</h3>
+        <p>Dimensioned technical drawings to BS/ISO standards. Orthographic projections, section views, and GD&amp;T callouts ready for your machine shop.</p>
+        <div class="service-tags"><span class="tag">SolidWorks</span><span class="tag">DXF/DWG</span><span class="tag">PDF</span></div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>3D Solid Modelling</h3>
+        <p>Parametric 3D models for parts and assemblies. Supplied as STEP, IGES, or native SolidWorks / Fusion 360 / Creo format.</p>
+        <div class="service-tags"><span class="tag">SolidWorks</span><span class="tag">Fusion 360</span><span class="tag">Creo</span></div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M2 12h4M18 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <h3>CNC Milling Code</h3>
+        <p>G-code for 3-axis milling with optimised toolpaths, feeds, speeds, and safe entries — post-processed for your specific controller.</p>
+        <div class="service-tags"><span class="tag">G-code</span><span class="tag">3-axis</span><span class="tag">Post-processed</span></div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <h3>CNC Turning Code</h3>
+        <p>Turning programs for lathes and turning centres — facing, boring, profiling, and threading. Post-processed and ready to load.</p>
+        <div class="service-tags"><span class="tag">Lathe G-code</span><span class="tag">Threading</span><span class="tag">Turning centres</span></div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <h3>Stress Analysis (FEA)</h3>
+        <p>Finite Element Analysis using SolidWorks Simulation or Creo Simulate. Static loading, safety factors, and design recommendations.</p>
+        <div class="service-tags"><span class="tag">FEA</span><span class="tag">SolidWorks Sim</span><span class="tag">Creo Simulate</span></div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <h3>Full Manufacturing Package</h3>
+        <p>Complete solution: 3D model + FEA + drawings + CNC code. Everything a machine shop needs at one fixed price.</p>
+        <div class="service-tags"><span class="tag">End-to-end</span><span class="tag">Production-ready</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ PRICING SECTION ══════════════════════════ -->
+<section id="pricing">
+  <div class="container">
+    <div class="section-label">Transparent pricing</div>
+    <h2 class="section-title">Up to 50% Below UK Market Rates</h2>
+    <p class="section-sub">Professional-grade files at roughly half what agencies charge. Fixed project prices — no surprise invoices.</p>
+
+    <div class="pricing-intro">
+      <strong>Why so affordable?</strong> Standard UK market rates for CAD/CAM are £40–£65/hour. I charge the equivalent of £20–£35/hour — building my freelance reputation alongside my engineering career. You get the same quality (SolidWorks, Creo, Fusion 360, CAM post-processing, FEA) at half the price.
+    </div>
+
+    <div class="pricing-grid">
+
+      <div class="price-card">
+        <div class="price-type">CAD Only</div>
+        <h3>Drawing &amp; Modelling</h3>
+        <div class="price-amount">
+          <span class="from">Starting from</span>
+          <span class="amount">&pound;60</span>
+          <!-- &pound; = HTML entity for the £ symbol -->
+          <span class="unit"> / project</span>
+        </div>
+        <ul class="price-list">
+          <li>2D technical drawing from sketch</li>
+          <li>3D model (SolidWorks/Fusion/Creo)</li>
+          <li>Title block, tolerances &amp; GD&amp;T</li>
+          <li>STEP, DXF, DWG, PDF supplied</li>
+          <li>One free revision included</li>
+        </ul>
+        <!--
+          mailto: link — clicking this opens the user's
+          email app with fields pre-filled.
+          The ? starts query parameters (extra data).
+          subject= fills the email subject line.
+          &body= fills the email body.
+          %20 = space | %0A = new line (URL encoding)
+          Replace YOUR_EMAIL with your real address.
+        -->
+        <a class="price-cta"
+           href="mailto:umanana2000@gmail.com?subject=CAD%20Quote%20Request&body=Hi%2C%0A%0AI%20need%20a%20quote%20for%20a%20CAD%20drawing%20%2F%20model.%0A%0ADescription%3A%0AMaterial%3A%0AFile%20format%20needed%3A%0ADeadline%3A">
+          Request This Quote
+        </a>
+      </div>
+
+      <div class="price-card featured">
+        <div class="featured-badge">Most Popular</div>
+        <div class="price-type">CAD + CAM</div>
+        <h3>Design + CNC Code</h3>
+        <div class="price-amount">
+          <span class="from">Starting from</span>
+          <span class="amount">&pound;200</span>
+          <span class="unit"> / project</span>
+        </div>
+        <ul class="price-list">
+          <li>Full 3D model + 2D drawing</li>
+          <li>CNC toolpaths (milling or turning)</li>
+          <li>G-code post-processed for your machine</li>
+          <li>Toolpath simulation included</li>
+          <li>Manufacturing-ready file pack</li>
+        </ul>
+        <a class="price-cta"
+           href="mailto:umanana2000@gmail.com?subject=CAD%20%2B%20CAM%20Quote%20Request&body=Hi%2C%0A%0AI%20need%20CAD%20modelling%20plus%20CNC%20programming.%0A%0ADescription%3A%0AMachining%20type%20(milling%20%2F%20turning)%3A%0ACNC%20controller%3A%0AMaterial%3A%0ADeadline%3A">
+          Request This Quote
+        </a>
+      </div>
+
+      <div class="price-card">
+        <div class="price-type">Full Package</div>
+        <h3>CAD + FEA + CAM</h3>
+        <div class="price-amount">
+          <span class="from">Starting from</span>
+          <span class="amount">&pound;400</span>
+          <span class="unit"> / project</span>
+        </div>
+        <ul class="price-list">
+          <li>Complete 3D model + drawings</li>
+          <li>Stress analysis (FEA) with report</li>
+          <li>Design optimisation recommendations</li>
+          <li>CNC milling or turning code</li>
+          <li>Everything a machine shop needs</li>
+        </ul>
+        <a class="price-cta"
+           href="mailto:umanana2000@gmail.com?subject=Full%20Package%20Quote%20Request&body=Hi%2C%0A%0AI%20need%20the%20full%20CAD%20%2B%20FEA%20%2B%20CAM%20package.%0A%0ADescription%3A%0AMaterial%3A%0ALoad%20conditions%20for%20FEA%3A%0ACNC%20controller%3A%0ADeadline%3A">
+          Request This Quote
+        </a>
+      </div>
+
+    </div>
+    <p class="price-note">Prices are indicative. Complex parts or large assemblies may be higher. I always provide a fixed quote before starting.</p>
+  </div>
+</section>
+
+
+<!-- ══ ABOUT SECTION ════════════════════════════ -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <!-- Flange engineering drawing photo -->
+      <img src="flange.png" alt="NewGen Drafts — Copper Flange Engineering Drawing"
+           style="width:100%; aspect-ratio:4/5; border-radius:14px; object-fit:cover; object-position:center top; display:block;">
+      <div class="about-content">
+        <div class="section-label">About me</div>
+        <h2 class="section-title">Real Engineering Experience, Honest Prices</h2>
+        <p>I'm an experienced mechanical engineer working in industry, offering CAD and CAM services as a freelancer. My day-to-day work involves exactly the kind of design and manufacturing challenges you need solving.</p>
+        <p>I use SolidWorks, Fusion 360, and Creo daily — including FEA simulation and full CAM post-processing for both milling machines and turning centres.</p>
+        <p>Based in the UK and serving clients remotely across England, Scotland, Wales and Northern Ireland.</p>
+        <div class="skills-list">
+          <div class="skill-pill"><span class="skill-dot"></span>SolidWorks</div>
+          <div class="skill-pill"><span class="skill-dot"></span>Fusion 360</div>
+          <div class="skill-pill"><span class="skill-dot"></span>Creo (PTC)</div>
+          <div class="skill-pill"><span class="skill-dot"></span>FEA / Simulation</div>
+          <div class="skill-pill"><span class="skill-dot"></span>CNC Milling CAM</div>
+          <div class="skill-pill"><span class="skill-dot"></span>CNC Turning CAM</div>
+          <div class="skill-pill"><span class="skill-dot"></span>GD&amp;T</div>
+          <div class="skill-pill"><span class="skill-dot"></span>BS/ISO Standards</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ PROCESS SECTION ══════════════════════════ -->
+<section id="process">
+  <div class="container">
+    <div class="section-label" style="color:#f4a590;">How it works</div>
+    <h2 class="section-title">Simple 4-Step Process</h2>
+    <p class="section-sub">No complicated portals — just a direct email conversation.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">01</div><h3>Email your brief</h3><p>Send a description, sketch, or existing file. The more detail, the more accurate my quote.</p></div>
+      <div class="step"><div class="step-num">02</div><h3>Receive a fixed quote</h3><p>I'll reply within 24 hours with a fixed price and estimated delivery date. No surprises.</p></div>
+      <div class="step"><div class="step-num">03</div><h3>I get to work</h3><p>Once approved, I start designing. You can check in at any point for progress updates.</p></div>
+      <div class="step"><div class="step-num">04</div><h3>Files delivered</h3><p>Files arrive by email. One free revision is included if anything needs adjusting.</p></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ CONTACT SECTION ══════════════════════════ -->
+<section id="contact">
+  <div class="container" style="text-align:center;">
+    <div class="section-label">Get in touch</div>
+    <h2 class="section-title">Ready to Start? Email Me Directly</h2>
+    <p class="section-sub" style="margin:0 auto;">No forms, no portals — a direct email. I reply within 24 hours with a fixed quote.</p>
+  </div>
+
+  <div class="contact-wrapper">
+    <div class="contact-card">
+      <div class="contact-icon">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <h3>Send a project brief</h3>
+      <p>Email me your requirements and I'll come back with a fixed price and timeline within 24 hours.</p>
+      <!--
+        This mailto: link is pre-filled with a template.
+        When a customer clicks it, their email app opens
+        with the subject and a structured body ready to fill in.
+      -->
+      <a class="contact-link"
+         href="mailto:umanana2000@gmail.com?subject=Project%20Quote%20Request&body=Hi%2C%0A%0AService%20needed%20(CAD%20%2F%20CAM%20%2F%20FEA%20%2F%20Full%20package)%3A%0A%0ADescription%20of%20part%3A%0A%0AMaterial%3A%0A%0ACNC%20controller%20(if%20applicable)%3A%0A%0ADeadline%3A%0A%0AFile%20format%20needed%3A%0A%0AAttachments%3A%20(please%20attach%20any%20sketches%20or%20files)">
+        ✉ Email for a Quote
+      </a>
+    </div>
+    <div class="contact-card">
+      <div class="contact-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h3>Response time</h3>
+      <p>I reply to all enquiries within 24 hours on working days. Complex quotes may take up to 48 hours. All enquiries are free and confidential.</p>
+      <a class="contact-link" href="mailto:umanana2000@gmail.com">umanana2000@gmail.com</a>
+    </div>
+  </div>
+
+  <!-- What to include guide -->
+  <div class="contact-message">
+    <h3>What to include in your email</h3>
+    <div class="email-template">
+      <strong>1. Service needed:</strong> CAD drawing / 3D model / CNC milling / turning / FEA / full package<br>
+      <strong>2. Part description:</strong> What is it? What does it do? Any reference dimensions?<br>
+      <strong>3. Material:</strong> Steel, aluminium, plastic, etc.<br>
+      <strong>4. CNC controller</strong> (for CAM work): e.g. Fanuc, Siemens 840D, Heidenhain, Haas<br>
+      <strong>5. Deadline:</strong> When do you need the files?<br>
+      <strong>6. File format:</strong> STEP, DXF, PDF, native SolidWorks, etc.<br>
+      <strong>7. Attachments:</strong> Sketches, photos, or existing files — anything helps
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ FOOTER ════════════════════════════════════ -->
+<footer>
+  <div>
+    <div class="footer-logo">NexGen Drafts UK</div>
+    <!-- &mdash; = long dash (—) -->
+    <p style="margin-top:0.4rem;font-size:0.82rem;">CAD, CAM &amp; FEA Services &mdash; United Kingdom</p>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem;">
+    <a href="mailto:umanana2000@gmail.com" style="font-size:0.85rem;">umanana2000@gmail.com</a>
+    <!-- &copy; = copyright symbol © -->
+    <p style="font-size:0.78rem;">&copy; 2025 NexGen Drafts UK. All rights reserved.</p>
+  </div>
+</footer>
+
+
+<!--
+  ════════════════════════════════════════════════
+  JAVASCRIPT — makes the page INTERACTIVE
+  HTML = structure | CSS = style | JS = behaviour
+
+  <script> goes at the BOTTOM of <body> so the HTML
+  loads and is visible before the script runs.
+  Putting it in <head> would make the page look blank
+  while the script loads.
+  ════════════════════════════════════════════════
+-->
+<script>
+  /*
+    This script highlights the correct nav link
+    as you scroll down the page.
+  */
+
+  // querySelectorAll = returns ALL matching elements as a list
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  // 'scroll' event fires every time the user scrolls
+  window.addEventListener('scroll', () => {
+    let current = '';
+
+    // forEach = loops over each item in the list
+    sections.forEach(section => {
+      // If we've scrolled past 120px above this section, it's "current"
+      if (window.scrollY >= section.offsetTop - 120) {
+        current = section.getAttribute('id'); // e.g. "services"
+      }
+    });
+
+    navLinks.forEach(link => {
+      // If href="#services" matches "#" + current → colour it orange
+      link.style.color = link.getAttribute('href') === '#' + current
+        ? 'var(--accent)'  // Active = orange
+        : '';              // Inactive = reset to CSS default
+    });
+  });
+</script>
+
+</body>
+</html>
